@@ -63,14 +63,14 @@ describe("test dynamo client endpoints", () => {
         (mockDocumentClient.put as SinonStub).returns(mockRequest);
         const dynamoClient: DynamoClient = new DynamoClient(null, mockDocumentClient);
 
-        const result: Promise<AttributeMap> = dynamoClient.put(tableName, key);
+        const result: Promise<boolean> = dynamoClient.put(tableName, key);
         expect(mockDocumentClient.put).to.have.been.calledWith({
             TableName: tableName,
             Item: key,
         });
 
-        return result.then((attributeMap) => {
-            expect(attributeMap).to.equal(key);
+        return result.then((result) => {
+            expect(result).to.be.true;
         }, () => expect(true).to.be.false);
     });
 
@@ -81,7 +81,7 @@ describe("test dynamo client endpoints", () => {
         (mockDocumentClient.put as SinonStub).returns(mockRequest);
         const dynamoClient: DynamoClient = new DynamoClient(null, mockDocumentClient);
 
-        const result: Promise<AttributeMap> = dynamoClient.put(tableName, key);
+        const result: Promise<boolean> = dynamoClient.put(tableName, key);
         expect(mockDocumentClient.put).to.have.been.calledWith({
             TableName: tableName,
             Item: key,
@@ -191,6 +191,7 @@ describe("test dynamo client endpoints", () => {
         expect(mockDocumentClient.update).to.have.been.calledWith({
             TableName: tableName,
             Key: key,
+            ReturnValues: "ALL_NEW",
             UpdateExpression: "SET test= :test",
             ExpressionAttributeValues: {
                 ":test": updatedItem.test,
@@ -218,6 +219,7 @@ describe("test dynamo client endpoints", () => {
         expect(mockDocumentClient.update).to.have.been.calledWith({
             TableName: tableName,
             Key: key,
+            ReturnValues: "ALL_NEW",
             UpdateExpression: "SET test= :test",
             ExpressionAttributeValues: {
                 ":test": updatedItem.test,
@@ -254,6 +256,7 @@ describe("test dynamo client endpoints", () => {
         expect(mockDocumentClient.update).to.have.been.calledWith({
             TableName: tableName,
             Key: testItem,
+            ReturnValues: "ALL_NEW",
             UpdateExpression: "SET #name= :name",
             ExpressionAttributeValues: {
                 ":name": updatedItem.name,

@@ -2,22 +2,22 @@ import * as chai from "chai";
 import "mocha";
 import {App} from "../../src/App";
 import chaiHttp = require("chai-http");
-import {IComponent} from "../../src/models/Component";
+import {IProcedure} from "../../src/models/Procedure";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
 
-describe("test components routes", () => {
+describe("test procedures routes", () => {
     const app = new App(3000).getExpressApplication();
 
-    const testData: IComponent = {
+    const testData: IProcedure = {
         name: "test",
         description: "description",
     };
 
     before("setup/test create", () => {
         // Create test element
-        return chai.request(app).post("/components")
+        return chai.request(app).post("/procedures")
             .send(testData)
             .then((response) => {
                 expect(response.status).to.equal(200);
@@ -26,7 +26,7 @@ describe("test components routes", () => {
     });
 
     it("/ scans all components", () => {
-        return chai.request(app).get("/components")
+        return chai.request(app).get("/procedures")
             .then((response) => {
                 expect(response.status).to.equal(200);
                 expect(response.body).to.deep.equal([testData]);
@@ -34,7 +34,7 @@ describe("test components routes", () => {
     });
 
     it("/:name get component", () => {
-        return chai.request(app).get("/components/" + testData.name)
+        return chai.request(app).get("/procedures/" + testData.name)
             .then((response) => {
                 expect(response.status).to.equal(200);
                 expect(response.body).to.deep.equal(testData);
@@ -42,7 +42,7 @@ describe("test components routes", () => {
     });
 
     it("/:name update component", () => {
-        return chai.request(app).put("/components/" + testData.name)
+        return chai.request(app).put("/procedures/" + testData.name)
             .send({
                 description: "new description",
             })
@@ -56,7 +56,7 @@ describe("test components routes", () => {
 
     after("cleanup/test delete", () => {
         // Delete test data
-        return chai.request(app).del("/components/" + testData.name)
+        return chai.request(app).del("/procedures/" + testData.name)
             .then((response) => {
                 expect(response.status).to.equal(200);
                 expect(response.body).to.be.true;

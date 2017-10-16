@@ -51,8 +51,8 @@ describe("test dynamo client endpoints", function () {
             TableName: tableName,
             Item: key,
         });
-        return result.then(function (attributeMap) {
-            expect(attributeMap).to.equal(key);
+        return result.then(function (result) {
+            expect(result).to.be.true;
         }, function () { return expect(true).to.be.false; });
     });
     it("test put endpoint (failure)", function () {
@@ -140,6 +140,7 @@ describe("test dynamo client endpoints", function () {
         expect(mockDocumentClient.update).to.have.been.calledWith({
             TableName: tableName,
             Key: key,
+            ReturnValues: "ALL_NEW",
             UpdateExpression: "SET test= :test",
             ExpressionAttributeValues: {
                 ":test": updatedItem.test,
@@ -161,6 +162,7 @@ describe("test dynamo client endpoints", function () {
         expect(mockDocumentClient.update).to.have.been.calledWith({
             TableName: tableName,
             Key: key,
+            ReturnValues: "ALL_NEW",
             UpdateExpression: "SET test= :test",
             ExpressionAttributeValues: {
                 ":test": updatedItem.test,
@@ -187,6 +189,7 @@ describe("test dynamo client endpoints", function () {
         expect(mockDocumentClient.update).to.have.been.calledWith({
             TableName: tableName,
             Key: testItem,
+            ReturnValues: "ALL_NEW",
             UpdateExpression: "SET #name= :name",
             ExpressionAttributeValues: {
                 ":name": updatedItem.name,

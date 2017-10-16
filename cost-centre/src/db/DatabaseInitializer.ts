@@ -2,6 +2,7 @@ import {DocumentClient} from "aws-sdk/lib/dynamodb/document_client";
 import {Component} from "./definitions/Component";
 import {TableFactory} from "./TableFactory";
 import CreateTableInput = DocumentClient.CreateTableInput;
+import {Procedure} from "./definitions/Procedure";
 import {DynamoClient} from "./DynamoClient";
 
 /**
@@ -12,8 +13,8 @@ export class DatabaseInitializer {
     /**
      * Initialize DynamoDB database
      */
-    public static initialize() {
-        DatabaseInitializer.initializeDatabase();
+    public static initialize(type: string) {
+        DatabaseInitializer.initializeDatabase(type);
     }
 
     // Provisioned Read Capacity Units
@@ -24,12 +25,18 @@ export class DatabaseInitializer {
     /**
      * Create all database tables
      */
-    private static initializeDatabase(): void {
+    private static initializeDatabase(type: string): void {
         const dynamoClient: DynamoClient = new DynamoClient();
         const tablesParams: CreateTableInput[] = DatabaseInitializer.initializeTables();
 
-        tablesParams.forEach((tableParams) => dynamoClient.deleteTable({ TableName: tableParams.TableName }));
-        tablesParams.forEach((tableParams) => dynamoClient.createTable(tableParams));
+        switch (type) {
+            case "d": case "delete":
+                tablesParams.forEach((tableParams) => dynamoClient.deleteTable({ TableName: tableParams.TableName }));
+                break;
+            case "c": case "create": default:
+                tablesParams.forEach((tableParams) => dynamoClient.createTable(tableParams));
+                break;
+        }
     }
 
     /**
@@ -42,10 +49,11 @@ export class DatabaseInitializer {
 
         // Add all table definitions
         tables.push(tableFactory.buildTable(Component));
+        tables.push(tableFactory.buildTable(Procedure));
 
         return tables;
     }
 }
 
 // Script entry point
-DatabaseInitializer.initialize();
+DatabaseInitializer.initialize(process.argv[0]);

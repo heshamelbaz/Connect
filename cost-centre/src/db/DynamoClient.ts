@@ -87,12 +87,12 @@ export class DynamoClient {
      * @param item
      * @returns {Promise<DocumentClient.AttributeMap>}
      */
-    public put<T>(table: string, item: T): Promise<AttributeMap> {
+    public put<T>(table: string, item: T): Promise<boolean> {
         return this.documentClient.put({
             TableName: table,
             Item: item,
         }).promise()
-            .then((result) => result.Attributes);
+            .then((result) => true);
     }
 
     /**
@@ -155,6 +155,7 @@ export class DynamoClient {
         return this.documentClient.update({
             TableName: table,
             Key: key,
+            ReturnValues: "ALL_NEW",
             UpdateExpression: expression,
             ExpressionAttributeValues: expressionValues,
             ...(Object.keys(expressionNames).length === 0 ? {} : { ExpressionAttributeNames: expressionNames}),
