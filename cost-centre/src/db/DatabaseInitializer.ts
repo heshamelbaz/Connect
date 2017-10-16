@@ -3,6 +3,7 @@ import {Component} from "./definitions/Component";
 import {TableFactory} from "./TableFactory";
 import CreateTableInput = DocumentClient.CreateTableInput;
 import {Procedure} from "./definitions/Procedure";
+import {Workflow} from "./definitions/Workflow";
 import {DynamoClient} from "./DynamoClient";
 
 /**
@@ -50,6 +51,7 @@ export class DatabaseInitializer {
         // Add all table definitions
         tables.push(tableFactory.buildTable(Component));
         tables.push(tableFactory.buildTable(Procedure));
+        tables.push(tableFactory.buildTable(Workflow));
 
         return tables;
     }

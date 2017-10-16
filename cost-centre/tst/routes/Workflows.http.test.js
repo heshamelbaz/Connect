@@ -6,9 +6,9 @@ var App_1 = require("../../src/App");
 var chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 var expect = chai.expect;
-describe("test procedures routes", function () {
+describe("test workflows routes", function () {
     var app = new App_1.App(3000).getExpressApplication();
-    var baseUrl = "/procedures";
+    var baseUrl = "/workflows";
     var testData = {
         name: "test",
         description: "description",

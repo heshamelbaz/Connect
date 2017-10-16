@@ -9,6 +9,7 @@ const expect = chai.expect;
 
 describe("test procedures routes", () => {
     const app = new App(3000).getExpressApplication();
+    const baseUrl: string = "/procedures";
 
     const testData: IProcedure = {
         name: "test",
@@ -17,7 +18,7 @@ describe("test procedures routes", () => {
 
     before("setup/test create", () => {
         // Create test element
-        return chai.request(app).post("/procedures")
+        return chai.request(app).post(baseUrl)
             .send(testData)
             .then((response) => {
                 expect(response.status).to.equal(200);
@@ -26,7 +27,7 @@ describe("test procedures routes", () => {
     });
 
     it("/ scans all components", () => {
-        return chai.request(app).get("/procedures")
+        return chai.request(app).get(baseUrl)
             .then((response) => {
                 expect(response.status).to.equal(200);
                 expect(response.body).to.deep.equal([testData]);
@@ -34,7 +35,7 @@ describe("test procedures routes", () => {
     });
 
     it("/:name get component", () => {
-        return chai.request(app).get("/procedures/" + testData.name)
+        return chai.request(app).get(baseUrl + "/" + testData.name)
             .then((response) => {
                 expect(response.status).to.equal(200);
                 expect(response.body).to.deep.equal(testData);
@@ -42,7 +43,7 @@ describe("test procedures routes", () => {
     });
 
     it("/:name update component", () => {
-        return chai.request(app).put("/procedures/" + testData.name)
+        return chai.request(app).put(baseUrl + "/" + testData.name)
             .send({
                 description: "new description",
             })
@@ -56,7 +57,7 @@ describe("test procedures routes", () => {
 
     after("cleanup/test delete", () => {
         // Delete test data
-        return chai.request(app).del("/procedures/" + testData.name)
+        return chai.request(app).del(baseUrl + "/" + testData.name)
             .then((response) => {
                 expect(response.status).to.equal(200);
                 expect(response.body).to.be.true;

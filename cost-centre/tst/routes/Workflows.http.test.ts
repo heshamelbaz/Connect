@@ -2,16 +2,16 @@ import * as chai from "chai";
 import "mocha";
 import {App} from "../../src/App";
 import chaiHttp = require("chai-http");
-import {IComponent} from "../../src/models/Component";
+import {IWorkflow} from "../../src/models/Workflow";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
 
-describe("test components routes", () => {
+describe("test workflows routes", () => {
     const app = new App(3000).getExpressApplication();
-    const baseUrl: string = "/components";
+    const baseUrl: string = "/workflows";
 
-    const testData: IComponent = {
+    const testData: IWorkflow = {
         name: "test",
         description: "description",
     };

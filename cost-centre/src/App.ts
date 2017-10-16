@@ -5,6 +5,7 @@ import * as logger from "morgan";
 import {DynamoClient} from "./db/DynamoClient";
 import {ComponentRoute} from "./routes/ComponentRoute";
 import {ProcedureRoute} from "./routes/ProcedureRoute";
+import {WorkflowRoute} from "./routes/WorkflowRoute";
 
 /**
  * Express application that handles API calls
@@ -66,6 +67,7 @@ export class App {
     private initializeRoutes(): void {
         this.express.use("/components", new ComponentRoute(this.dynamoClient).getRouter());
         this.express.use("/procedures", new ProcedureRoute(this.dynamoClient).getRouter());
+        this.express.use("/workflows", new WorkflowRoute(this.dynamoClient).getRouter());
     }
 
     /**

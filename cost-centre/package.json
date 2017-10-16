@@ -13,7 +13,8 @@
     "test": "mocha --reporter spec --compilers ts:ts-node/register 'tst/**/*.test.ts'",
     "test-watch": "mocha --watch --reporter spec --compilers ts:ts-node/register 'tst/**/*.test.ts'",
     "create-db": "npm run build && node dist/db/DatabaseInitializer.js",
-    "watch": "concurrently \"tsc -w\" \"npm run test-watch\""
+    "watch": "concurrently \"tsc -w\" \"npm run test-watch\"",
+    "init-db": "tsc && node dist/db/DatabaseInitializer.js d && node dist/db/DatabaseInitializer.js c"
   },
   "dependencies": {
     "body-parser": "~1.17.1",
